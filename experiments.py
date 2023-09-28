@@ -404,22 +404,22 @@ def generate_experiment_cfgs(id):
     # Table 1: Final CISS on Cityscapes->ACDC.
     # ----------------------------------------
     if id == 1:
-        seeds = [0, 1, 2]
+        seeds = [0]
         #         source,          target,         crop,        rcs_min_crop
-        cs2acdc = ('cityscapesHR', 'acdcHR',       '1024x1024', 0.5 * (2 ** 2))
+        cs2acdc = ('cityscapes',    'acdc',        '512x512',       0.5)
         stylization = 'fda'
         dec, backbone = 'daformer_sepaspp', 'mitb5'
         uda, rcs_T, plcrop = 'dacs_a999_fdthings_ciss_src_ceorig_inv_trg_ceorigorig_invorigorigstylizedstylized', 0.01, False
         inv_loss_weight = 50.0
         inv_loss_weight_target = 20.0
-        inference = 'slide'
-        workers_per_gpu = 16
+        # inference = 'slide'
+        workers_per_gpu = 4
         for dataset, architecture, sync_crop_size in [
-            (cs2acdc, f'hrda1-512-0.1_{dec}', None),
+            (cs2acdc, dec, None),
         ]:
             for seed in seeds:
                 source, target, crop, rcs_min_crop = dataset
-                gpu_model = 'NVIDIATITANRTX'
+                gpu_model = 'NVIDIAGeForceRTX3090'
                 cfg = config_from_vars()
                 cfgs.append(cfg)
     # --------------------------------------------------
